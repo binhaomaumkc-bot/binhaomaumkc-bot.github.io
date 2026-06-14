@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   ScrambleMark: Zero-Query Watermark-Agnostic Black-Box Evasion of Modern Speech Watermarking
+  </title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+  </script>
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet"/>
+  <link href="style_examples.css" rel="stylesheet" type="text/css"/>
+ </head>
+ <body>
+  <style>
+   .container {
+		width: 1700px;
+		max-width: 98vw;
+	}
+
+	.table {
+		 border-collapse: collapse;
+	}
+		
+	.table th,
+	.table td {
+		vertical-align: middle !important;
+		padding: 10px 12px !important;
+		border-top: 1px solid #e5e5e5;
+	}
+		
+	.colname {
+		font-size: large;
+		font-weight: bold;
+		white-space: nowrap;
+	}
+
+	h1, h2 {
+	    text-align: center;
+	}
+
+	p {
+	    text-align: left;
+	}
+
+	.table audio {
+	    width: 148px !important;
+	    min-width: 148px !important;
+	    max-width: 148px !important;
+	    height: 34px !important;
+	
+	    display: block;
+	    margin: 0 auto;
+	
+	    border-radius: 999px;
+	    overflow: hidden;
+	
+	    background-color: #f8fafc;
+	    border: 1px solid #e5e7eb;
+	    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	}
+	
+	.table audio::-webkit-media-controls-panel {
+	    background-color: #f8fafc;
+	}
+	
+	.audio-bg {
+	    background: transparent !important;
+	    text-align: center;
+	    vertical-align: middle !important;
+	}
+	
+	.audio-pass audio {
+	    background-color: #ecfdf3;
+	    border: 1px solid #bbf7d0;
+	    box-shadow: 0 1px 2px rgba(22, 101, 52, 0.10);
+	}
+	
+	.audio-pass audio::-webkit-media-controls-panel {
+	    background-color: #ecfdf3;
+	}
+
+	.audio-fail audio {
+	    background-color: #fef2f2;
+	    border: 1px solid #fecaca;
+	    box-shadow: 0 1px 2px rgba(185, 28, 28, 0.10);
+	}
+
+	.audio-fail audio::-webkit-media-controls-panel {
+	    background-color: #fef2f2;
+	}
+
+	.table {
+	    margin-bottom: 22px;
+	}
+
+    .vertical-demo-table {
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
+        table-layout: auto;
+    }
+
+    .vertical-demo-table .method-col {
+        min-width: 170px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .vertical-demo-table .detection-cell {
+        min-width: 105px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        white-space: nowrap;
+        vertical-align: middle !important;
+    }
+
+    .det-pass {
+        color: #15803d;
+        font-weight: 700;
+    }
+
+    .det-fail {
+        color: #b91c1c;
+        font-weight: 700;
+    }
+
+    .detection-legend {
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+  </style>
+  <div class="container">
+   <center>
+    <h1>
+     ScrambleMark: Zero-Query Watermark-Agnostic Black-Box Evasion of Modern Speech Watermarking
+    </h1>
+    <div style="border: 1px solid black; margin-top: 20px; margin-bottom: 10px;">
+    </div>
+    <p>
+     <b>
+      Abstract:
+     </b>
+     Speech watermarking is becoming a key defense for digital copyright and content authentication. Existing attacks treat evasion as a removal problem: they erase the watermark, relying on detector access or on speech data that is hard to collect, such as paired clean–watermarked or clean target speaker speech. Commercial platforms are moving to close off these assumptions. TrustedAudio, for instance, restricts detection to authenticated users and denies meaningful detection feedback to unauthorized parties. Adversaries thus cannot tell whether a sample is watermarked or which watermark it carries, nor reliably remove it without degrading speech quality.
+
+In this work, we show that evading a speech watermark does not require erasing it: detection relies on the structural consistency of the embedded pattern, and disrupting this consistency is enough to defeat it. Building on this observation, we identify harmonic structure as an effective attack surface, as perturbing it breaks watermark consistency while preserving perceptual quality. We therefore propose ScrambleMark, a zero-query, watermark-agnostic, black-box attack that evades detection through harmonic scrambling. ScrambleMark combines a deterministic engine for discovering transferable harmonic perturbations with a generative model that learns randomized scrambling patterns, avoiding reliance on fixed attack rules. Across three commercial platforms (Google SynthID, Resemble AI, and TrustedAudio), ScrambleMark is the only attack to both evade detection and keep speech natural, achieving nearly 97\% evasion and a 4.2/5 human rating, far above the 1.1 to 1.7 of prior attacks. Beyond evasion, ScrambleMark withstands adaptive recovery designed to reverse it, evidence that structural evasion is hard to mitigate in practice.
+    </p>
+	
+    <h2>
+     Watermark Attack for Commercial Watermarking Systems
+    </h2>
+    <div class="detection-legend">
+     <b>
+      Detection legend:
+     </b>
+     <span class="det-pass">
+      ✓ Bypassed
+     </span>
+     = watermark not detected after attack;
+     <span class="det-fail">
+      ✗ Detected
+     </span>
+     = watermark still detected.
+    </div>
+    <table class="table vertical-demo-table" style="margin-top: 20px;">
+     <tr>
+      <td style="font-size: large; text-align: center;">
+       <b>
+        Method
+       </b>
+      </td>
+      <td style="font-size: large; text-align: center;">
+       <b>
+        Resemble AI Audio
+       </b>
+      </td>
+      <td style="font-size: large; text-align: center;">
+       <b>
+        Detection
+       </b>
+      </td>
+      <td style="font-size: large; text-align: center;">
+       <b>
+        TrustedAudio Audio
+       </b>
+      </td>
+      <td style="font-size: large; text-align: center;">
+       <b>
+        Detection
+       </b>
+      </td>
+      <td style="font-size: large; text-align: center;">
+       <b>
+        SynthID Audio
+       </b>
+      </td>
+      <td style="font-size: large; text-align: center;">
+       <b>
+        Detection
+       </b>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       Original
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio/english1.wav" type="audio/wav"/> # resemble
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       White-Box-PGD
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio_timbre-whitebox/english1.wav" type="audio/wav"/> # resemble
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       White-Box-I-FGSM
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio_timbre-whitebox-i/english1.wav" type="audio/wav"/> #resemble
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/synthetic/speaker3-male-Sadaltager-2-black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/synthetic/speaker3-male-Sadaltager-2-black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       Black-Box-HSJA
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio_timbre-blackbox/english1.wav" type="audio/wav"/> #resemble
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       Black-Box-S-HSJA
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio_timbre-blackbox-s/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       Overwriting Attack
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio_timbre_overwriting/english1.wav" type="audio/wav"/> # resemble
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/synthetic/speaker3-male-Sadaltager-2-black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/synthetic/speaker3-male-Sadaltager-2-black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       SE Attack
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio_timbre_se/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       Harmonic Attack
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio_timbre_harmonic/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+      <td class="audio-bg audio-fail">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-fail">
+        ✗ Detected
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       DiffErase-L
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio-diff-l/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/synthetic/speaker3-male-Sadaltager-2-black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/synthetic/speaker3-male-Sadaltager-2-black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       DiffErase-M
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio-diff-m/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       Encodec
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio_encodec/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/English1_ori_trusted_black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+     </tr>
+     <tr>
+      <td class="colname method-col">
+       ScrambleMark
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/trustedaudio/ori_trustedaudio-scrambleattack/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/synthetic/speaker3-male-Sadaltager-2-black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+      <td class="audio-bg audio-pass">
+       <audio controls="">
+        <source src="samples/synthetic/speaker3-male-Sadaltager-2-black.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+      </td>
+      <td class="detection-cell">
+       <span class="det-pass">
+        ✓ Bypassed
+       </span>
+      </td>
+     </tr>
+    </table>
+   </center>
+  </div>
+ </body>
+ <script type="text/javascript">
+ </script>
+</html>
