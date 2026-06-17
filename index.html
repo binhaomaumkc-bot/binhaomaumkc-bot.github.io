@@ -660,7 +660,337 @@ In this work, we show that evading a speech watermark does not require erasing i
        </span>
       </td>
      </tr>
+     
     </table>
+    <style>
+  .vertical-demo-table .main-audio-cell {
+    min-width: 190px;
+  }
+
+  .vertical-demo-table .main-audio-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .vertical-demo-table .main-audio-line audio {
+    margin: 0 !important;
+    display: block;
+  }
+
+  .vertical-demo-table .main-detection-icon {
+    display: inline-block;
+    min-width: 18px;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1;
+  }
+</style>
+
+<script>
+  (function () {
+    const table = document.querySelector(".vertical-demo-table");
+
+    if (!table || table.classList.contains("main-detection-merged")) {
+      return;
+    }
+
+    table.classList.add("main-detection-merged");
+
+    const rows = Array.from(table.rows);
+
+    rows.forEach((row, rowIndex) => {
+      if (rowIndex === 0) {
+        [6, 4, 2].forEach(index => {
+          if (row.cells[index]) {
+            row.deleteCell(index);
+          }
+        });
+        return;
+      }
+
+      [6, 4, 2].forEach(index => {
+        const detectionCell = row.cells[index];
+        const audioCell = row.cells[index - 1];
+
+        if (!detectionCell || !audioCell) {
+          return;
+        }
+
+        const detectionSpan = detectionCell.querySelector(".det-pass, .det-fail");
+        const isPass = detectionSpan && detectionSpan.classList.contains("det-pass");
+
+        const icon = isPass ? "✓" : "✗";
+        const iconClass = isPass ? "det-pass" : "det-fail";
+
+        const audio = audioCell.querySelector("audio");
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "main-audio-line";
+
+        if (audio) {
+          wrapper.appendChild(audio);
+        }
+
+        const iconSpan = document.createElement("span");
+        iconSpan.className = "main-detection-icon " + iconClass;
+        iconSpan.textContent = icon;
+
+        wrapper.appendChild(iconSpan);
+
+        audioCell.innerHTML = "";
+        audioCell.classList.add("main-audio-cell");
+        audioCell.appendChild(wrapper);
+
+        row.deleteCell(index);
+      });
+    });
+  })();
+</script>
+
+<!-- Further Comparison -->
+<style>
+  .further-comparison-table {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    table-layout: auto;
+    margin-top: 20px;
+  }
+
+  .further-comparison-table th,
+  .further-comparison-table td {
+    text-align: center;
+    vertical-align: middle !important;
+  }
+
+  .platform-rowspan {
+    min-width: 150px;
+    text-align: center !important;
+    vertical-align: middle !important;
+    font-size: large;
+    font-weight: bold;
+    white-space: nowrap;
+    background-color: #f8fafc;
+  }
+
+  .platform-method-header td {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    background-color: #f8fafc;
+    border-top: 2px solid #d1d5db !important;
+    white-space: nowrap;
+  }
+
+  .platform-method-header td:first-child {
+    background-color: transparent;
+  }
+
+  .further-audio-cell {
+    min-width: 190px;
+  }
+
+  .further-audio-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .further-audio-line audio {
+    margin: 0 !important;
+  }
+
+  .further-detection-icon {
+    display: inline-block;
+    min-width: 18px;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1;
+  }
+</style>
+
+<h2 style="margin-top: 35px;">
+  Further Comparison
+</h2>
+
+<table class="table further-comparison-table">
+  <tbody id="further-comparison-body"></tbody>
+</table>
+
+<script>
+  const furtherColumns = [
+    {
+      title: "Original Audio",
+      key: "original",
+      status: "fail",
+      icon: "✗"
+    },
+    {
+      title: "Black-Box",
+      key: "blackbox",
+      status: "platform-dependent"
+    },
+    {
+      title: "DiffErase-M",
+      key: "diffm",
+      status: "pass",
+      icon: "✓"
+    },
+    {
+      title: "DiffErase-L",
+      key: "diffl",
+      status: "pass",
+      icon: "✓"
+    },
+    {
+      title: "ScrambleMark",
+      key: "scramble",
+      status: "pass",
+      icon: "✓"
+    }
+  ];
+
+  const furtherData = [
+    {
+      platform: "TrustedAudio",
+      audioNames: [
+        "woman1.wav",
+        "woman2.wav",
+        "woman3.wav",
+        "man1.wav",
+        "man2.wav"
+      ],
+      blackboxStatus: "pass",
+      blackboxIcon: "✓",
+      paths: {
+        original: "samples/further/trustedaudio/ori/",
+        blackbox: "samples/further/trustedaudio/black-box/",
+        diffm: "samples/further/trustedaudio/diff-m/",
+        diffl: "samples/further/trustedaudio/diff-l/",
+        scramble: "samples/further/trustedaudio/scramble/"
+      }
+    },
+    {
+      platform: "Resemble AI",
+      audioNames: [
+        "english1.wav",
+        "english2.wav",
+        "english3.wav",
+        "english4.wav",
+        "english5.wav"
+      ],
+      blackboxStatus: "pass",
+      blackboxIcon: "✓",
+      paths: {
+        original: "samples/resembleai/ori/",
+        blackbox: "samples/resembleai/black-box/",
+        diffm: "samples/resembleai/diff-m/",
+        diffl: "samples/resembleai/diff-l/",
+        scramble: "samples/resembleai/scramblemark/"
+      }
+    },
+    {
+      platform: "SynthID",
+      audioNames: [
+        "english1.wav",
+        "english2.wav",
+        "english3.wav",
+        "english4.wav",
+        "english5.wav"
+      ],
+      blackboxStatus: "fail",
+      blackboxIcon: "✗",
+      paths: {
+        original: "samples/synthid/ori/",
+        blackbox: "samples/synthid/black-box/",
+        diffm: "samples/synthid/diff-m/",
+        diffl: "samples/synthid/diff-l/",
+        scramble: "samples/synthid/scramblemark/"
+      }
+    }
+  ];
+
+  function getStatusInfo(item, col) {
+    if (col.status === "platform-dependent") {
+      return {
+        status: item.blackboxStatus,
+        icon: item.blackboxIcon
+      };
+    }
+
+    return {
+      status: col.status,
+      icon: col.icon
+    };
+  }
+
+  function audioCell(src, status, icon) {
+    const audioClass = status === "pass" ? "audio-pass" : "audio-fail";
+    const iconClass = status === "pass" ? "det-pass" : "det-fail";
+
+    return `
+      <td class="audio-bg further-audio-cell ${audioClass}">
+        <div class="further-audio-line">
+          <audio controls="">
+            <source src="${src}" type="audio/wav"/>
+            Your browser does not support the audio element.
+          </audio>
+          <span class="further-detection-icon ${iconClass}">
+            ${icon}
+          </span>
+        </div>
+      </td>
+    `;
+  }
+
+  function methodHeaderRow() {
+    let row = `
+      <tr class="platform-method-header">
+        <td></td>
+    `;
+
+    furtherColumns.forEach(col => {
+      row += `<td>${col.title}</td>`;
+    });
+
+    row += "</tr>";
+    return row;
+  }
+
+  const tbody = document.getElementById("further-comparison-body");
+
+  furtherData.forEach(item => {
+    tbody.innerHTML += methodHeaderRow();
+
+    item.audioNames.forEach((audioName, index) => {
+      let row = "<tr>";
+
+      if (index === 0) {
+        row += `
+          <td class="colname platform-rowspan" rowspan="${item.audioNames.length}">
+            ${item.platform}
+          </td>
+        `;
+      }
+
+      furtherColumns.forEach(col => {
+        const statusInfo = getStatusInfo(item, col);
+
+        row += audioCell(
+          item.paths[col.key] + audioName,
+          statusInfo.status,
+          statusInfo.icon
+        );
+      });
+
+      row += "</tr>";
+      tbody.innerHTML += row;
+    });
+  });
+</script>
    </center>
   </div>
  </body>
