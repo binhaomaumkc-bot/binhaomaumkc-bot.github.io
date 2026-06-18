@@ -854,10 +854,11 @@ In this work, we show that evading a speech watermark does not require erasing i
       platform: "TrustedAudio",
       audioNames: [
         "woman1.wav",
-        "woman2.wav",
-        "woman3.wav",
         "man1.wav",
-        "man2.wav"
+        "woman2.wav",
+        "man2.wav",
+        "woman3.wav"
+        
       ],
 
 
@@ -873,10 +874,12 @@ In this work, we show that evading a speech watermark does not require erasing i
       platform: "Resemble AI",
       audioNames: [
         "watermarked_woman3.wav",
-        "watermarked_woman2.wav",
-        "watermarked_woman1.wav",
         "man1.wav",
-        "watermarked_man2.wav"
+        "watermarked_woman2.wav",
+        "watermarked_man2.wav",
+        "watermarked_woman1.wav"
+
+
       ],
 
 
@@ -892,10 +895,10 @@ In this work, we show that evading a speech watermark does not require erasing i
       platform: "SynthID",
       audioNames: [
         "3-4.wav",
-        "4-1.wav",
-        "5-4.wav",
         "1-1.wav",
-        "2-2.wav"
+        "4-1.wav",
+        "2-2.wav",
+        "5-4.wav"
       ],
 
       // pass = ✓ Bypassed
@@ -903,17 +906,21 @@ In this work, we show that evading a speech watermark does not require erasing i
       statuses: {
         blackbox: [
           "pass", // 3-4.wav
-          "pass", // 4-1.wav
-          "fail", // 5-4.wav
           "pass", // 1-1.wav
-          "fail"  // 2-2.wav
+          "pass", // 4-1.wav
+          "fail",  // 2-2.wav
+          "fail", // 5-4.wav
+
+          
         ],
         diffl: [
           "pass", // 3-4.wav
-          "pass", // 4-1.wav
-          "pass", // 5-4.wav
           "fail", // 1-1.wav
-          "fail"  // 2-2.wav
+          "pass", // 4-1.wav
+          "fail",  // 2-2.wav
+          "pass" // 5-4.wav
+          
+          
         ]
       },
 
