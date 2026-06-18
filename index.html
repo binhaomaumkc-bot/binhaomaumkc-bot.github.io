@@ -825,31 +825,27 @@ In this work, we show that evading a speech watermark does not require erasing i
     {
       title: "Original Audio",
       key: "original",
-      status: "fail",
-      icon: "✗"
+      defaultStatus: "fail"
     },
     {
       title: "Black-Box",
       key: "blackbox",
-      status: "platform-dependent"
+      defaultStatus: "pass"
     },
     {
       title: "DiffErase-M",
       key: "diffm",
-      status: "pass",
-      icon: "✓"
+      defaultStatus: "pass"
     },
     {
       title: "DiffErase-L",
       key: "diffl",
-      status: "pass",
-      icon: "✓"
+      defaultStatus: "pass"
     },
     {
       title: "ScrambleMark",
       key: "scramble",
-      status: "pass",
-      icon: "✓"
+      defaultStatus: "pass"
     }
   ];
 
@@ -863,8 +859,8 @@ In this work, we show that evading a speech watermark does not require erasing i
         "man1.wav",
         "man2.wav"
       ],
-      blackboxStatus: "pass",
-      blackboxIcon: "✓",
+
+
       paths: {
         original: "samples/further/trustedaudio/ori/",
         blackbox: "samples/further/trustedaudio/black-box/",
@@ -882,8 +878,8 @@ In this work, we show that evading a speech watermark does not require erasing i
         "man1.wav",
         "watermarked_man2.wav"
       ],
-      blackboxStatus: "pass",
-      blackboxIcon: "✓",
+
+
       paths: {
         original: "samples/further/resembleAI/ori/",
         blackbox: "samples/further/resembleAI/black-box/",
@@ -895,36 +891,73 @@ In this work, we show that evading a speech watermark does not require erasing i
     {
       platform: "SynthID",
       audioNames: [
-        "english1.wav",
-        "english2.wav",
-        "english3.wav",
-        "english4.wav",
-        "english5.wav"
+        "3-4.wav",
+        "4-1.wav",
+        "5-4.wav",
+        "1-1.wav",
+        "2-2.wav"
       ],
-      blackboxStatus: "fail",
-      blackboxIcon: "✗",
+
+      // pass = ✓ Bypassed
+      // fail = ✗ Detected
+      statuses: {
+        blackbox: [
+          "pass", // 3-4.wav
+          "pass", // 4-1.wav
+          "fail", // 5-4.wav
+          "pass", // 1-1.wav
+          "fail"  // 2-2.wav
+        ],
+        diffl: [
+          "pass", // 3-4.wav
+          "pass", // 4-1.wav
+          "pass", // 5-4.wav
+          "fail", // 1-1.wav
+          "fail"  // 2-2.wav
+        ]
+      },
+
       paths: {
-        original: "samples/synthid/ori/",
-        blackbox: "samples/synthid/black-box/",
-        diffm: "samples/synthid/diff-m/",
-        diffl: "samples/synthid/diff-l/",
-        scramble: "samples/synthid/scramblemark/"
+        original: "samples/further/synthid/ori/",
+        blackbox: "samples/further/synthid/blackbox/",
+        diffm: "samples/further/synthid/diff-m/",
+        diffl: "samples/further/synthid/diff-l/",
+        scramble: "samples/further/synthid/scramblemark/"
       }
     }
   ];
 
-  function getStatusInfo(item, col) {
-    if (col.status === "platform-dependent") {
-      return {
-        status: item.blackboxStatus,
-        icon: item.blackboxIcon
-      };
-    }
+  function normalizeStatus(status) {
+    return status === "pass" ? "pass" : "fail";
+  }
+
+  function makeStatusInfo(status) {
+    const normalizedStatus = normalizeStatus(status);
 
     return {
-      status: col.status,
-      icon: col.icon
+      status: normalizedStatus,
+      icon: normalizedStatus === "pass" ? "✓" : "✗"
     };
+  }
+
+  function getStatusInfo(item, col, index) {
+    if (item.statuses && item.statuses[col.key]) {
+      const methodStatus = item.statuses[col.key];
+
+
+
+      if (Array.isArray(methodStatus)) {
+        return makeStatusInfo(methodStatus[index]);
+      }
+
+
+      if (typeof methodStatus === "string") {
+        return makeStatusInfo(methodStatus);
+      }
+    }
+
+
+    return makeStatusInfo(col.defaultStatus);
   }
 
   function audioCell(src, status, icon) {
@@ -977,7 +1010,7 @@ In this work, we show that evading a speech watermark does not require erasing i
       }
 
       furtherColumns.forEach(col => {
-        const statusInfo = getStatusInfo(item, col);
+        const statusInfo = getStatusInfo(item, col, index);
 
         row += audioCell(
           item.paths[col.key] + audioName,
