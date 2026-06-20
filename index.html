@@ -1,19 +1,20 @@
 <!DOCTYPE html>
+
 <html>
- <head>
-  <meta charset="utf-8"/>
-  <title>
+<head>
+<meta charset="utf-8"/>
+<title>
    ScrambleMark: Zero-Query Watermark-Agnostic Black-Box Evasion of Modern Speech Watermarking
   </title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-  </script>
-  <!-- Latest compiled and minified Bootstrap CSS -->
-  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet"/>
-  <link href="style_examples.css" rel="stylesheet" type="text/css"/>
- </head>
- <body>
-  <style>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+<!-- Latest compiled and minified Bootstrap CSS -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet"/>
+<link href="style_examples.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<style>
    .container {
 		width: 1700px;
 		max-width: 98vw;
@@ -134,535 +135,429 @@
         font-size: 16px;
     }
   </style>
-  <div class="container">
-   <center>
-    <h1>
+<div class="container">
+<center>
+<h1>
      ScrambleMark: Zero-Query Watermark-Agnostic Black-Box Evasion of Modern Speech Watermarking
     </h1>
-    <div style="border: 1px solid black; margin-top: 20px; margin-bottom: 10px;">
-    </div>
-    <p>
-     <b>
+<div style="border: 1px solid black; margin-top: 20px; margin-bottom: 10px;">
+</div>
+<p>
+<b>
       Abstract:
      </b>
      Speech watermarking is becoming a key defense for digital copyright and content authentication. Existing attacks treat evasion as a removal problem: they erase the watermark, relying on detector access or on speech data that is hard to collect, such as paired clean–watermarked or clean target speaker speech. Commercial platforms are moving to close off these assumptions. TrustedAudio, for instance, restricts detection to authenticated users and denies meaningful detection feedback to unauthorized parties. Adversaries thus cannot tell whether a sample is watermarked or which watermark it carries, nor reliably remove it without degrading speech quality.
 
 In this work, we show that evading a speech watermark does not require erasing it: detection relies on the structural consistency of the embedded pattern, and disrupting this consistency is enough to defeat it. Building on this observation, we identify harmonic structure as an effective attack surface, as perturbing it breaks watermark consistency while preserving perceptual quality. We therefore propose ScrambleMark, a zero-query, watermark-agnostic, black-box attack that evades detection through harmonic scrambling. ScrambleMark combines a deterministic engine for discovering transferable harmonic perturbations with a generative model that learns randomized scrambling patterns, avoiding reliance on fixed attack rules. Across three commercial platforms (Google SynthID, Resemble AI, and TrustedAudio), ScrambleMark is the only attack to both evade detection and keep speech natural, achieving nearly 97\% evasion and a 4.2/5 human rating, far above the 1.1 to 1.7 of prior attacks. Beyond evasion, ScrambleMark withstands adaptive recovery designed to reverse it, evidence that structural evasion is hard to mitigate in practice.
     </p>
-	
-    <h2>
+<h2>
      Watermark Attack for Commercial Watermarking Systems
     </h2>
-    <div class="detection-legend">
-     <b>
+<div class="detection-legend">
+<b>
       Detection legend:
      </b>
-     <span class="det-pass">
+<span class="det-pass">
       ✓ Bypassed
      </span>
-     = watermark not detected after attack;
+     = watermark detection evaded;
      <span class="det-fail">
       ✗ Detected
      </span>
      = watermark still detected.
     </div>
-    <table class="table vertical-demo-table" style="margin-top: 20px;">
-     <tr>
-      <td style="font-size: large; text-align: center;">
-       <b>
+<table class="table vertical-demo-table" style="margin-top: 20px;">
+<tr><td style="font-size: large; text-align: center;">
+<b>
         Method
        </b>
-      </td>
-      <td style="font-size: large; text-align: center;">
-       <b>
-        TrustedAudio
-       </b>
-      </td>
-      <td style="font-size: large; text-align: center;">
-       <b>
-        Detection
-       </b>
-      </td>
-      <td style="font-size: large; text-align: center;">
-       <b>
-        Resemble AI
-       </b>
-      </td>
-      <td style="font-size: large; text-align: center;">
-       <b>
-        Detection
-       </b>
-      </td>
-      <td style="font-size: large; text-align: center;">
-       <b>
+</td><td style="font-size: large; text-align: center;">
+<b>
         SynthID
        </b>
-      </td>
-      <td style="font-size: large; text-align: center;">
-       <b>
+</td><td style="font-size: large; text-align: center;">
+<b>
         Detection
        </b>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td><td style="font-size: large; text-align: center;">
+<b>
+        TrustedAudio
+       </b>
+</td><td style="font-size: large; text-align: center;">
+<b>
+        Detection
+       </b>
+</td><td style="font-size: large; text-align: center;">
+<b>
+        Resemble AI
+       </b>
+</td><td style="font-size: large; text-align: center;">
+<b>
+        Detection
+       </b>
+</td></tr>
+<tr><td class="colname method-col">
        Original
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio/english1.wav" type="audio/wav"/> # resemble
+      </td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/synthid/ori/english2_4_3.wav" type="audio/wav"/> #synthid
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/resembleai/ori/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio/english1.wav" type="audio/wav"/> # resemble
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/synthid/ori/english2_4_3.wav" type="audio/wav"/> #synthid
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/resembleai/ori/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td></tr>
+<tr><td class="colname method-col">
        White-Box-PGD
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio_timbre-whitebox/english1.wav" type="audio/wav"/> # resemble
+      </td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/synthid/white-box/english2_4_3.wav" type="audio/wav"/> # synthid
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/resembleai/white-box/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio_timbre-whitebox/english1.wav" type="audio/wav"/> # resemble
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/synthid/white-box/english2_4_3.wav" type="audio/wav"/> # synthid
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/resembleai/white-box/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td></tr>
+<tr><td class="colname method-col">
        White-Box-I-FGSM
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio_timbre-whitebox-i/english1.wav" type="audio/wav"/> #resemble
+      </td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/synthid/white-box-i/english2_4_3.wav" type="audio/wav"/> #synthid
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/resembleai/white-box-i/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio_timbre-whitebox-i/english1.wav" type="audio/wav"/> #resemble
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/synthid/white-box-i/english2_4_3.wav" type="audio/wav"/> #synthid
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/resembleai/white-box-i/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td></tr>
+<tr><td class="colname method-col">
        Black-Box-HSJA
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio_timbre-blackbox/english1.wav" type="audio/wav"/> #resemble
+      </td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/synthid/black-box/english2_4_3.wav" type="audio/wav"/> #synthid
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
-        ✓ Bypassed
-       </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/resembleai/black-box/english1.wav" type="audio/wav"/>
-        Your browser does not support the audio element.
-       </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
-        ✓ Bypassed
-       </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/synthid/black-box/english2_4_3.wav" type="audio/wav"/> #synthid
-        Your browser does not support the audio element.
-       </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio_timbre-blackbox/english1.wav" type="audio/wav"/> #resemble
+        Your browser does not support the audio element.
+       </audio>
+</td><td class="detection-cell">
+<span class="det-pass">
+        ✓ Bypassed
+       </span>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/resembleai/black-box/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+</td><td class="detection-cell">
+<span class="det-pass">
+        ✓ Bypassed
+       </span>
+</td></tr>
+<tr><td class="colname method-col">
        Black-Box-S-HSJA
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio_timbre-blackbox-s/english1.wav" type="audio/wav"/>
+      </td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/synthid/black-box-s/english2_4_3.wav" type="audio/wav"/> #synthid
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
-        ✓ Bypassed
-       </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/resembleai/black-box-s/english1.wav" type="audio/wav"/>
-        Your browser does not support the audio element.
-       </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
-        ✓ Bypassed
-       </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/synthid/black-box-s/english2_4_3.wav" type="audio/wav"/> #synthid
-        Your browser does not support the audio element.
-       </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio_timbre-blackbox-s/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+</td><td class="detection-cell">
+<span class="det-pass">
+        ✓ Bypassed
+       </span>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/resembleai/black-box-s/english1.wav" type="audio/wav"/>
+        Your browser does not support the audio element.
+       </audio>
+</td><td class="detection-cell">
+<span class="det-pass">
+        ✓ Bypassed
+       </span>
+</td></tr>
+<tr><td class="colname method-col">
        Overwriting Attack
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio_timbre_overwriting/english1.wav" type="audio/wav"/> # resemble
+      </td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/synthid/overwrite/english2_4_3.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/resembleai/overwrite/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio_timbre_overwriting/english1.wav" type="audio/wav"/> # resemble
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/synthid/overwrite/english2_4_3.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/resembleai/overwrite/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td></tr>
+<tr><td class="colname method-col">
        SE Attack
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio_timbre_se/english1.wav" type="audio/wav"/>
+      </td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/synthid/SE/english2_4_3.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/resembleai/SE/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio_timbre_se/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/synthid/SE/english2_4_3.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/resembleai/SE/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td></tr>
+<tr><td class="colname method-col">
        Harmonic Attack
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio_timbre_harmonic/english1.wav" type="audio/wav"/>
+      </td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/synthid/harmonicattack/english2_4_3.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/resembleai/harmonicattack/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio_timbre_harmonic/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-      <td class="audio-bg audio-fail">
-       <audio controls="">
-        <source src="samples/synthid/harmonicattack/english2_4_3.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-fail">
+<audio controls="" preload="none">
+<source src="samples/resembleai/harmonicattack/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-fail">
+</td><td class="detection-cell">
+<span class="det-fail">
         ✗ Detected
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td></tr>
+<tr><td class="colname method-col">
        DiffErase-L
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio-diff-l/english1.wav" type="audio/wav"/>
+      </td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/synthid/diff-l/english2_4_3.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/resembleai/diff-l/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio-diff-l/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/synthid/diff-l/english2_4_3.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/resembleai/diff-l/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td></tr>
+<tr><td class="colname method-col">
        DiffErase-M
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio-diff-m/english1.wav" type="audio/wav"/>
+      </td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/synthid/diff-m/english2_4_3.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/resembleai/diff-m/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio-diff-m/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/synthid/diff-m/english2_4_3.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/resembleai/diff-m/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td></tr>
+<tr><td class="colname method-col">
        Encodec
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio_encodec/english1.wav" type="audio/wav"/>
+      </td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/synthid/encodec/english2_4_3.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/resembleai/encodec/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio_encodec/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/synthid/encodec/english2_4_3.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/resembleai/encodec/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-     </tr>
-     <tr>
-      <td class="colname method-col">
+</td></tr>
+<tr><td class="colname method-col">
        ScrambleMark
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/trustedaudio/ori_trustedaudio-scrambleattack/english1.wav" type="audio/wav"/>
+      </td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/synthid/scramblemark/english2_4_3.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/resembleai/scramblemark/english1.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/trustedaudio/ori_trustedaudio-scrambleattack/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-      <td class="audio-bg audio-pass">
-       <audio controls="">
-        <source src="samples/synthid/scramblemark/english2_4_3.wav" type="audio/wav"/>
+</td><td class="audio-bg audio-pass">
+<audio controls="" preload="none">
+<source src="samples/resembleai/scramblemark/english1.wav" type="audio/wav"/>
         Your browser does not support the audio element.
        </audio>
-      </td>
-      <td class="detection-cell">
-       <span class="det-pass">
+</td><td class="detection-cell">
+<span class="det-pass">
         ✓ Bypassed
        </span>
-      </td>
-     </tr>
-     
-    </table>
-    <style>
+</td></tr>
+</table>
+<style>
   .vertical-demo-table .main-audio-cell {
     min-width: 190px;
   }
@@ -687,7 +582,6 @@ In this work, we show that evading a speech watermark does not require erasing i
     line-height: 1;
   }
 </style>
-
 <script>
   (function () {
     const table = document.querySelector(".vertical-demo-table");
@@ -748,7 +642,6 @@ In this work, we show that evading a speech watermark does not require erasing i
     });
   })();
 </script>
-
 <!-- Further Comparison -->
 <style>
   .further-comparison-table {
@@ -811,15 +704,12 @@ In this work, we show that evading a speech watermark does not require erasing i
     line-height: 1;
   }
 </style>
-
 <h2 style="margin-top: 35px;">
   Further Comparison
 </h2>
-
 <table class="table further-comparison-table">
-  <tbody id="further-comparison-body"></tbody>
+<tbody id="further-comparison-body"></tbody>
 </table>
-
 <script>
   const furtherColumns = [
     {
@@ -851,14 +741,53 @@ In this work, we show that evading a speech watermark does not require erasing i
 
   const furtherData = [
     {
+      platform: "SynthID",
+      audioNames: [
+        "3-4.wav",
+        "1-1.wav",
+        "4-1.wav",
+        "2-2.wav",
+        "5-4.wav",
+
+
+      ],
+
+      // pass = ✓ Bypassed
+      // fail = ✗ Detected
+      statuses: {
+        blackbox: [
+          "pass", // 3-4.wav
+          "pass", // 4-1.wav
+          "pass", // 5-4.wav
+          "fail", // 1-1.wav
+          "fail"  // 2-2.wav
+        ],
+        diffl: [
+          "pass", // 3-4.wav
+          "fail", // 4-1.wav
+          "pass", // 5-4.wav
+          "fail", // 1-1.wav
+          "pass"  // 2-2.wav
+        ]
+      },
+
+      paths: {
+        original: "samples/further/synthid/ori/",
+        blackbox: "samples/further/synthid/blackbox/",
+        diffm: "samples/further/synthid/diff-m/",
+        diffl: "samples/further/synthid/diff-l/",
+        scramble: "samples/further/synthid/scramblemark/"
+      }
+    },
+    {
       platform: "TrustedAudio",
       audioNames: [
-        "woman1.wav",
-        "man1.wav",
         "woman2.wav",
+        "man1.wav",
+        "woman1.wav",
         "man2.wav",
         "woman3.wav"
-        
+
       ],
 
 
@@ -874,11 +803,11 @@ In this work, we show that evading a speech watermark does not require erasing i
       platform: "Resemble AI",
       audioNames: [
         "watermarked_woman3.wav",
-        "man1.wav",
+          "man1.wav",
         "watermarked_woman2.wav",
         "watermarked_man2.wav",
-        "watermarked_woman1.wav"
-
+        "watermarked_woman1.wav",
+  
 
       ],
 
@@ -889,47 +818,6 @@ In this work, we show that evading a speech watermark does not require erasing i
         diffm: "samples/further/resembleAI/ori_diff-m/",
         diffl: "samples/further/resembleAI/ori-diff-l/",
         scramble: "samples/further/resembleAI/scramblemark/"
-      }
-    },
-    {
-      platform: "SynthID",
-      audioNames: [
-        "3-4.wav",
-        "1-1.wav",
-        "4-1.wav",
-        "2-2.wav",
-        "5-4.wav"
-      ],
-
-      // pass = ✓ Bypassed
-      // fail = ✗ Detected
-      statuses: {
-        blackbox: [
-          "pass", // 3-4.wav
-          "pass", // 1-1.wav
-          "pass", // 4-1.wav
-          "fail",  // 2-2.wav
-          "fail", // 5-4.wav
-
-          
-        ],
-        diffl: [
-          "pass", // 3-4.wav
-          "fail", // 1-1.wav
-          "pass", // 4-1.wav
-          "fail",  // 2-2.wav
-          "pass" // 5-4.wav
-          
-          
-        ]
-      },
-
-      paths: {
-        original: "samples/further/synthid/ori/",
-        blackbox: "samples/further/synthid/blackbox/",
-        diffm: "samples/further/synthid/diff-m/",
-        diffl: "samples/further/synthid/diff-l/",
-        scramble: "samples/further/synthid/scramblemark/"
       }
     }
   ];
@@ -974,7 +862,7 @@ In this work, we show that evading a speech watermark does not require erasing i
     return `
       <td class="audio-bg further-audio-cell ${audioClass}">
         <div class="further-audio-line">
-          <audio controls="">
+          <audio controls="" preload="none">
             <source src="${src}" type="audio/wav"/>
             Your browser does not support the audio element.
           </audio>
@@ -1031,9 +919,632 @@ In this work, we show that evading a speech watermark does not require erasing i
     });
   });
 </script>
-   </center>
-  </div>
- </body>
- <script type="text/javascript">
- </script>
+<!-- Academic Model Performance -->
+<style>
+  .academic-performance-section {
+    margin-top: 18px;
+    padding-top: 0;
+  }
+
+  .academic-performance-section h2 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .academic-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .academic-performance-table {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    table-layout: auto;
+    margin-top: 8px;
+  }
+
+  .academic-performance-table th,
+  .academic-performance-table td {
+    text-align: center;
+    vertical-align: middle !important;
+    white-space: nowrap;
+  }
+
+  .academic-performance-table th {
+    font-size: 16px;
+    font-weight: 700;
+    background-color: #f8fafc;
+    border-bottom: 2px solid #111827 !important;
+  }
+
+  .academic-method-col {
+    min-width: 190px;
+    text-align: left !important;
+    font-size: large;
+    font-weight: bold;
+    white-space: nowrap;
+    background-color: #f8fafc;
+  }
+
+  .academic-audio-cell {
+    min-width: 190px;
+  }
+
+  .academic-audio-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .academic-audio-line audio {
+    margin: 0 !important;
+  }
+
+  .academic-detection-icon {
+    display: inline-block;
+    min-width: 18px;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1;
+  }
+</style>
+<div class="academic-performance-section" id="academic-model-performance">
+<h2>
+    Academic Model Performance across Multiple Languages
+  </h2>
+<div class="academic-table-wrap">
+<table class="table academic-performance-table">
+<thead id="academic-performance-head"></thead>
+<tbody id="academic-performance-body"></tbody>
+</table>
+</div>
+</div>
+<script>
+  (function () {
+    /*
+      status:
+      pass = ✓ Bypassed
+      fail = ✗ Detected
+
+      每一个 watermark model 下面，每一个 attack method 都有自己的：
+      1. src 音频路径
+      2. status 检测结果
+    */
+
+    const academicMethods = [
+      { title: "Original", key: "original" },
+      { title: "White-Box-PGD", key: "whitebox_pgd" },
+      { title: "White-Box-I-FGSM", key: "whitebox_ifgsm" },
+      { title: "Black-Box-HSJA", key: "blackbox_hsja" },
+      { title: "Black-Box-S-HSJA", key: "blackbox_shsja" },
+      { title: "Overwriting Attack", key: "overwrite" },
+      { title: "SE Attack", key: "se" },
+      { title: "Harmonic Attack", key: "harmonic" },
+      { title: "DiffErase-L", key: "diffl" },
+      { title: "DiffErase-M", key: "diffm" },
+      { title: "Encodec", key: "encodec" },
+      { title: "ScrambleMark", key: "scramble" }
+    ];
+
+    const academicData = [
+      {
+        title: "AudioSeal",
+        key: "audioseal",
+        cells: {
+          original: {
+            src: "samples/academic/audioseal/ori/english1.wav",
+            status: "fail"
+          },
+          whitebox_pgd: {
+            src: "samples/academic/audioseal/white-box/english1.wav",
+            status: "fail"
+          },
+          whitebox_ifgsm: {
+            src: "samples/academic/audioseal/white-box-i/english1.wav",
+            status: "fail"
+          },
+          blackbox_hsja: {
+            src: "samples/academic/audioseal/black-box/english1.wav",
+            status: "pass"
+          },
+          blackbox_shsja: {
+            src: "samples/academic/audioseal/black-box-s/english1.wav",
+            status: "pass"
+          },
+          overwrite: {
+            src: "samples/academic/audioseal/overwrite/english1.wav",
+            status: "fail"
+          },
+          se: {
+            src: "samples/academic/audioseal/se/english1.wav",
+            status: "fail"
+          },
+          harmonic: {
+            src: "samples/academic/audioseal/harmonic/english1.wav",
+            status: "fail"
+          },
+          diffl: {
+            src: "samples/academic/audioseal/diff-l/english1.wav",
+            status: "pass"
+          },
+          diffm: {
+            src: "samples/academic/audioseal/diff-m/english1.wav",
+            status: "pass"
+          },
+          encodec: {
+            src: "samples/academic/audioseal/encodec/english1.wav",
+            status: "pass"
+          },
+          scramble: {
+            src: "samples/academic/audioseal/scramblemark/english1.wav",
+            status: "pass"
+          }
+        }
+      },
+
+      {
+        title: "WavMark",
+        key: "wavmark",
+        cells: {
+          original: {
+            src: "samples/academic/wavmark/ori/chinese1.wav",
+            status: "fail"
+          },
+          whitebox_pgd: {
+            src: "samples/academic/wavmark/whitebox/chinese1.wav",
+            status: "fail"
+          },
+          whitebox_ifgsm: {
+            src: "samples/academic/wavmark/whitebox-i/chinese1.wav",
+            status: "fail"
+          },
+          blackbox_hsja: {
+            src: "samples/academic/wavmark/blackbox/chinese1.wav",
+            status: "pass"
+          },
+          blackbox_shsja: {
+            src: "samples/academic/wavmark/blackbox-s/chinese1.wav",
+            status: "pass"
+          },
+          overwrite: {
+            src: "samples/academic/wavmark/overwrite/chinese1.wav",
+            status: "fail"
+          },
+          se: {
+            src: "samples/academic/wavmark/se/chinese1.wav",
+            status: "fail"
+          },
+          harmonic: {
+            src: "samples/academic/wavmark/harmonic/chinese1.wav",
+            status: "fail"
+          },
+          diffl: {
+            src: "samples/academic/wavmark/diff-l/chinese1.wav",
+            status: "pass"
+          },
+          diffm: {
+            src: "samples/academic/wavmark/diff-m/chinese1.wav",
+            status: "pass"
+          },
+          encodec: {
+            src: "samples/academic/wavmark/encodec/chinese1.wav",
+            status: "pass"
+          },
+          scramble: {
+            src: "samples/academic/wavmark/scramblemark/chinese1.wav",
+            status: "pass"
+          }
+        }
+      },
+
+      {
+        title: "AudioMarkNet",
+        key: "audiomarknet",
+        cells: {
+          original: {
+            src: "samples/academic/audiomarknet/ori/english1.wav",
+            status: "fail"
+          },
+          whitebox_pgd: {
+            src: "samples/academic/audiomarknet/whitebox/english1.wav",
+            status: "fail"
+          },
+          whitebox_ifgsm: {
+            src: "samples/academic/audiomarknet/whitebox-i/english1.wav",
+            status: "fail"
+          },
+          blackbox_hsja: {
+            src: "samples/academic/audiomarknet/blackbox/english1.wav",
+            status: "fail"
+          },
+          blackbox_shsja: {
+            src: "samples/academic/audiomarknet/blackbox-s/english1.wav",
+            status: "fail"
+          },
+          overwrite: {
+            src: "samples/academic/audiomarknet/overwrite/english1.wav",
+            status: "fail"
+          },
+          se: {
+            src: "samples/academic/audiomarknet/se/english1.wav",
+            status: "fail"
+          },
+          harmonic: {
+            src: "samples/academic/audiomarknet/harmonic/english1.wav",
+            status: "fail"
+          },
+          diffl: {
+            src: "samples/academic/audiomarknet/diff-l/english1.wav",
+            status: "pass"
+          },
+          diffm: {
+            src: "samples/academic/audiomarknet/diff-m/english1.wav",
+            status: "pass"
+          },
+          encodec: {
+            src: "samples/academic/audiomarknet/encodec/english1.wav",
+            status: "pass"
+          },
+          scramble: {
+            src: "samples/academic/audiomarknet/scramblemark/english1.wav",
+            status: "pass"
+          }
+        }
+      },
+
+      {
+        title: "SilentCipher",
+        key: "silentcipher",
+        cells: {
+          original: {
+            src: "samples/academic/silentcipher/ori/Korean1.wav",
+            status: "fail"
+          },
+          whitebox_pgd: {
+            src: "samples/academic/silentcipher/whitebox/Korean1.wav",
+            status: "fail"
+          },
+          whitebox_ifgsm: {
+            src: "samples/academic/silentcipher/whitebox-i/Korean1.wav",
+            status: "fail"
+          },
+          blackbox_hsja: {
+            src: "samples/academic/silentcipher/blackbox/Korean1.wav",
+            status: "pass"
+          },
+          blackbox_shsja: {
+            src: "samples/academic/silentcipher/blackbox-s/Korean1.wav",
+            status: "pass"
+          },
+          overwrite: {
+            src: "samples/academic/silentcipher/overwrite/Korean1.wav",
+            status: "fail"
+          },
+          se: {
+            src: "samples/academic/silentcipher/se/Korean1.wav",
+            status: "fail"
+          },
+          harmonic: {
+            src: "samples/academic/silentcipher/harmonic/Korean1.wav",
+            status: "fail"
+          },
+          diffl: {
+            src: "samples/academic/silentcipher/diff-l/Korean1.wav",
+            status: "pass"
+          },
+          diffm: {
+            src: "samples/academic/silentcipher/diff-m/Korean1.wav",
+            status: "pass"
+          },
+          encodec: {
+            src: "samples/academic/silentcipher/encodec/Korean1.wav",
+            status: "pass"
+          },
+          scramble: {
+            src: "samples/academic/silentcipher/scramblemark/Korean1.wav",
+            status: "pass"
+          }
+        }
+      },
+
+      {
+        title: "Collaborative",
+        key: "collaborative",
+        cells: {
+          original: {
+            src: "samples/academic/collaborative/ori/english1.wav",
+            status: "fail"
+          },
+          whitebox_pgd: {
+            src: "samples/academic/collaborative/whitebox/english1.wav",
+            status: "fail"
+          },
+          whitebox_ifgsm: {
+            src: "samples/academic/collaborative/whitebox-i/english1.wav",
+            status: "fail"
+          },
+          blackbox_hsja: {
+            src: "samples/academic/collaborative/blackbox/english1.wav",
+            status: "pass"
+          },
+          blackbox_shsja: {
+            src: "samples/academic/collaborative/blackbox-s/english1.wav",
+            status: "pass"
+          },
+          overwrite: {
+            src: "samples/academic/collaborative/overwrite/english1.wav",
+            status: "fail"
+          },
+          se: {
+            src: "samples/academic/collaborative/se/english1.wav",
+            status: "fail"
+          },
+          harmonic: {
+            src: "samples/academic/collaborative/harmonic/english1.wav",
+            status: "fail"
+          },
+          diffl: {
+            src: "samples/academic/collaborative/diff-l/english1.wav",
+            status: "pass"
+          },
+          diffm: {
+            src: "samples/academic/collaborative/diff-m/english1.wav",
+            status: "pass"
+          },
+          encodec: {
+            src: "samples/academic/collaborative/encodec/english1.wav",
+            status: "pass"
+          },
+          scramble: {
+            src: "samples/academic/collaborative/scramblemark/english1.wav",
+            status: "pass"
+          }
+        }
+      },
+
+      {
+        title: "RobustDNN",
+        key: "robustdnn",
+        cells: {
+          original: {
+            src: "samples/academic/robustdnn/ori/French.wav",
+            status: "fail"
+          },
+          whitebox_pgd: {
+            src: "samples/academic/robustdnn/whitebox/French.wav",
+            status: "fail"
+          },
+          whitebox_ifgsm: {
+            src: "samples/academic/robustdnn/whitebox-i/French.wav",
+            status: "fail"
+          },
+          blackbox_hsja: {
+            src: "samples/academic/robustdnn/blackbox/French.wav",
+            status: "fail"
+          },
+          blackbox_shsja: {
+            src: "samples/academic/robustdnn/blackbox-s/French.wav",
+            status: "fail"
+          },
+          overwrite: {
+            src: "samples/academic/robustdnn/overwrite/French.wav",
+            status: "fail"
+          },
+          se: {
+            src: "samples/academic/robustdnn/se/French.wav",
+            status: "pass"
+          },
+          harmonic: {
+            src: "samples/academic/robustdnn/harmonic/French.wav",
+            status: "pass"
+          },
+          diffl: {
+            src: "samples/academic/robustdnn/diff-l/French.wav",
+            status: "pass"
+          },
+          diffm: {
+            src: "samples/academic/robustdnn/diff-m/French.wav",
+            status: "pass"
+          },
+          encodec: {
+            src: "samples/academic/robustdnn/encodec/French.wav",
+            status: "pass"
+          },
+          scramble: {
+            src: "samples/academic/robustdnn/scramblemark/French.wav",
+            status: "pass"
+          }
+        }
+      },
+
+      {
+        title: "Timbre*",
+        key: "timbre",
+        cells: {
+          original: {
+            src: "samples/academic/timbre/ori/german1.wav",
+            status: "fail"
+          },
+          whitebox_pgd: {
+            src: "samples/academic/timbre/whitebox/german1.wav",
+            status: "fail"
+          },
+          whitebox_ifgsm: {
+            src: "samples/academic/timbre/whitebox-i/german1.wav",
+            status: "fail"
+          },
+          blackbox_hsja: {
+            src: "samples/academic/timbre/blackbox/german1.wav",
+            status: "fail"
+          },
+          blackbox_shsja: {
+            src: "samples/academic/timbre/blackbox-s/german1.wav",
+            status: "fail"
+          },
+          overwrite: {
+            src: "samples/academic/timbre/overwrite/german1.wav",
+            status: "fail"
+          },
+          se: {
+            src: "samples/academic/timbre/se/german1.wav",
+            status: "fail"
+          },
+          harmonic: {
+            src: "samples/academic/timbre/harmonic/german1.wav",
+            status: "fail"
+          },
+          diffl: {
+            src: "samples/academic/timbre/diff-l/german1.wav",
+            status: "pass"
+          },
+          diffm: {
+            src: "samples/academic/timbre/diff-m/german1.wav",
+            status: "pass"
+          },
+          encodec: {
+            src: "samples/academic/timbre/encodec/german1.wav",
+            status: "pass"
+          },
+          scramble: {
+            src: "samples/academic/timbre/scramblemark/german1.wav",
+            status: "pass"
+          }
+        }
+      }
+    ];
+
+    function normalizeAcademicStatus(status) {
+      return status === "pass" ? "pass" : "fail";
+    }
+
+    function getAcademicIcon(status) {
+      return status === "pass" ? "✓" : "✗";
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function getAcademicCell(model, method) {
+      const cell = model.cells && model.cells[method.key];
+
+      if (!cell) {
+        console.warn(
+          "Missing academic cell:",
+          "model =", model.key,
+          "method =", method.key
+        );
+
+        return {
+          src: "",
+          status: "fail"
+        };
+      }
+
+      return {
+        src: cell.src || "",
+        status: normalizeAcademicStatus(cell.status)
+      };
+    }
+
+    function academicAudioCell(cell, model, method) {
+      const status = normalizeAcademicStatus(cell.status);
+      const audioClass = status === "pass" ? "audio-pass" : "audio-fail";
+      const iconClass = status === "pass" ? "det-pass" : "det-fail";
+      const icon = getAcademicIcon(status);
+
+      const src = cell.src;
+      const label = model.title + " / " + method.title;
+
+      if (!src) {
+        return `
+          <td class="audio-bg academic-audio-cell ${audioClass}">
+            <div class="academic-audio-line">
+              <span style="color:#9ca3af; font-size:12px;">Missing audio</span>
+              <span class="academic-detection-icon ${iconClass}">
+                ${icon}
+              </span>
+            </div>
+          </td>
+        `;
+      }
+
+      return `
+        <td class="audio-bg academic-audio-cell ${audioClass}">
+          <div class="academic-audio-line">
+            <audio
+              controls
+              preload="none"
+              src="${src}"
+              data-label="${label}"
+              onerror="console.error('Academic audio failed:', this.dataset.label, this.src, this.error);"
+              onloadedmetadata="console.log('Academic audio loaded:', this.dataset.label, this.src);"
+            ></audio>
+
+            <span class="academic-detection-icon ${iconClass}">
+              ${icon}
+            </span>
+          </div>
+        </td>
+      `;
+    }
+
+    function renderAcademicHeader() {
+      const thead = document.getElementById("academic-performance-head");
+
+      let row = `
+        <tr>
+          <th>Method</th>
+      `;
+
+      academicData.forEach(model => {
+        row += `<th>${model.title}</th>`;
+      });
+
+      row += "</tr>";
+      thead.innerHTML = row;
+    }
+
+    function renderAcademicBody() {
+      const tbodyAcademic = document.getElementById("academic-performance-body");
+
+      let html = "";
+
+      academicMethods.forEach(method => {
+        let row = `
+          <tr>
+            <td class="academic-method-col">
+              ${method.title}
+            </td>
+        `;
+
+        academicData.forEach(model => {
+          const cell = getAcademicCell(model, method);
+          row += academicAudioCell(cell, model, method);
+        });
+
+        row += "</tr>";
+        html += row;
+      });
+
+      tbodyAcademic.innerHTML = html;
+
+    }
+
+    renderAcademicHeader();
+    renderAcademicBody();
+
+  })();
+</script>
+</center>
+</div>
+</body>
+<script type="text/javascript">
+</script>
 </html>
